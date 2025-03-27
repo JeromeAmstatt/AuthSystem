@@ -1,7 +1,6 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
-import { NextAuthOptions } from "next-auth";
-import NextAuth from "next-auth/next";
+import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -9,7 +8,7 @@ import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
-const authOptions: NextAuthOptions = {
+const handler = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
     GithubProvider({
@@ -35,6 +34,13 @@ const authOptions: NextAuthOptions = {
           where: {
             email: credentials.email,
           },
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            image: true,
+            password: true,
+          },
         });
 
         if (!user || !user.password) {
@@ -51,12 +57,28 @@ const authOptions: NextAuthOptions = {
         }
 
         return {
-          ...user,
-          image: user.image ?? "/images/pp.webp",
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          image: user.image,
         };
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
+  },
   pages: {
     signIn: "/auth",
   },
@@ -65,28 +87,6 @@ const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
-  callbacks: {
-    async jwt({ token, user }) {
-      // Lors de la connexion initiale, user sera défini et on l'ajoute au token
-      if (user) {
-        token.email = user.email;
-        token.id = user.id;
-        token.image = user.image;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      // À chaque appel de session, on transfère les infos stockées dans le token
-      if (session.user) {
-        session.user.email = token.email as string;
-        session.user.id = token.id as string;
-        session.user.image = token.image as string;
-      }
-      return session;
-    },
-  },
-};
-
-const handler = NextAuth(authOptions);
+});
 
 export { handler as GET, handler as POST };

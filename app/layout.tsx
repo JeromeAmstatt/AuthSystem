@@ -2,7 +2,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { NextAuthProvider } from "@/providers/next-auth";
-import { SessionProvider } from "next-auth/react";
 import Navbar from "@/components/Navbar";
 
 

@@ -22,6 +22,12 @@ export async function PUT(request: Request) {
                 name,
                 image,
             },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                image: true,
+            },
         });
 
         return NextResponse.json(updatedUser);

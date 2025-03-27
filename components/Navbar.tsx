@@ -88,6 +88,7 @@ const Navbar = () => {
                                         alt="User Image"
                                         width={40}
                                         height={40}
+                                        priority
                                     />
                                     <button
                                         onClick={handleLogout}
