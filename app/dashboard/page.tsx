@@ -26,16 +26,16 @@ export default function Dashboard() {
                     <div className="flex items-center justify-between mb-8">
                         <div className="flex items-center gap-4">
                             <div className="bg-indigo-100 p-2 rounded-full">
-                                <Image 
-                                    src={session?.user?.image || "/images/pp.webp"} 
-                                    className="rounded-full" 
+                                <Image
+                                    src={session?.user?.image || "/images/pp.webp"}
+                                    className="rounded-full"
                                     alt="User Image"
                                     width={100}
                                     height={100}
                                 />
                             </div>
                             <Link href={"/dashboard/edit"}>
-                                    <UserRoundPen />
+                                <UserRoundPen />
                             </Link>
                             <div>
                                 <h1 className="text-2xl font-bold text-gray-900">
@@ -53,14 +53,14 @@ export default function Dashboard() {
                             Logout
                         </Button>
                         <Link href={'/'}>
-                        <Button
-                            variant="outline"
-                            className="flex items-center gap-2"
-                        >
-                            Accueil
-                        </Button>
+                            <Button
+                                variant="outline"
+                                className="flex items-center gap-2"
+                            >
+                                Accueil
+                            </Button>
                         </Link>
-                        
+
                     </div>
 
                     <div className="bg-indigo-50 rounded-lg p-6">
