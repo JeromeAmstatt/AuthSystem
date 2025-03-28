@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { User, Camera } from "lucide-react";
+import Image from "next/image";
 
 export default function ProfilePage() {
     // Get session and update function from NextAuth
@@ -85,6 +86,7 @@ export default function ProfilePage() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
+        
 
         try {
             // Update user data in the database
@@ -101,6 +103,7 @@ export default function ProfilePage() {
             }
 
             const updatedUser = await response.json();
+            
 
             toast({
                 title: "Success",
@@ -115,6 +118,7 @@ export default function ProfilePage() {
         } finally {
             setIsLoading(false);
         }
+        router.refresh()
     };
 
     return (
@@ -132,10 +136,12 @@ export default function ProfilePage() {
                     <div className="flex flex-col items-center space-y-4">
                         <div className="relative">
                             {formData.image ? (
-                                <img
+                                <Image
                                     src={formData.image}
                                     alt="Profile"
                                     className="h-24 w-24 rounded-full object-cover"
+                                    width={50}
+                                    height={50}
                                 />
                             ) : (
                                 <div className="h-24 w-24 rounded-full bg-gray-200 flex items-center justify-center">

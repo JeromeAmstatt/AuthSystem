@@ -84,10 +84,10 @@ const Navbar = () => {
                                 <Link href={'/dashboard'} className="flex items-center space-x-4">
                                     <Image
                                         src={session.user.image || "/images/pp.webp"}
-                                        className="rounded-full"
+                                        className="h-10 w-10 rounded-full object-cover"
                                         alt="User Image"
-                                        width={40}
-                                        height={40}
+                                        width={30}
+                                        height={30}
                                         priority
                                     />
                                     <button
